@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TextInput, StyleSheet, Button } from 'react-native';
+import { View, Text, FlatList, TextInput, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FAB } from 'react-native-paper'; // Importa el botón flotante
 
 //Este componente es para mostrar y buscar los registros de enfermedades
 const ListScreen = ({ navigation }) => {
@@ -14,7 +15,7 @@ const ListScreen = ({ navigation }) => {
             //TODO probar el async Storage
             const savedRecords = await AsyncStorage.getItem('records');
             if (savedRecords) {
-                setRecords(JSON.parse(savedRecords));
+                setRecords(JSON.parse(savedRecords)); // Cargar registros desde AsyncStorage
             } else {
                 // Datos de prueba en caso de no haber registros XD
                 const mockData = [
@@ -58,7 +59,12 @@ const ListScreen = ({ navigation }) => {
                     </View>
                 )}
             />
-            <Button title="Nuevo Registro" onPress={() => navigation.navigate('Register')} />
+            {/* Botón flotante para nuevo registro */}
+            <FAB
+                style={styles.fab}
+                icon="plus"
+                onPress={() => navigation.navigate('Register')}
+            />
         </View>
     );
 };
@@ -83,6 +89,13 @@ const styles = StyleSheet.create({
     },
     itemText: {
         fontSize: 16,
+    },
+    fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 0,
+        backgroundColor: '#007BFF', // Color del botón flotante
     },
 });
 
