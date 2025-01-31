@@ -1,14 +1,14 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from './screens/LoginScreen';
+import LoginScreen from './screens/LogInScreen';
 import ListScreen from './screens/ListScreen';
 import RegisterScreen from './screens/RegisterScreen';
 
-//Instancia del navigator para moverse entre las pantallas
+// Instancia del navigator para moverse entre las pantallas
 const Stack = createStackNavigator();
 
-//Interfaz principal
+// Interfaz principal
 export default function App() {
   return (
     <NavigationContainer>

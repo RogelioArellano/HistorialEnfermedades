@@ -9,7 +9,7 @@ const LoginScreen = ({ navigation }) => {
 
     //Manejar el inicio de sesión
     const handleLogin = () => {
-        if (email === 'jhon@mail.com' && password === '77@15') {
+        if (email === 'jhon@mail.com' && password === '77@1$') {
             navigation.navigate('List');
         } else {
             Alert.alert('Error', 'Credenciales incorrectas');
