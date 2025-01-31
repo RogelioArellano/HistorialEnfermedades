@@ -20,4 +20,4 @@ Esta es una aplicación móvil Android que se encarga de llevar un historial de 
 
 1. **Clonar el Repositorio**:
    ```bash
-   git clone https://github.com/RogelioArellano/HistorialEnfermedades 
+  git clone https://github.com/RogelioArellano/HistorialEnfermedades
