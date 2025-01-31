@@ -1,19 +1,27 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, Button, Alert, StyleSheet } from 'react-native';
 
-const LoginScreen = ({navigation}) => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+//Componente para manejar autenticación de usuarios
+const LoginScreen = ({ navigation }) => {
+    //Almacenar credneciales
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
+    //Manejar el inicio de sesión
     const handleLogin = () => {
         if (email === 'jhon@mail.com' && password === '77@15') {
             navigation.navigate('List');
         } else {
-            Alert.alert('Error', 'Credenciales incorrectas')
+            Alert.alert('Error', 'Credenciales incorrectas');
         }
-    }
+    };
 
-    return(
+    //Validaciones de credenciales
+    const isEmailValid = /\S+@\S+\.\S+/.test(email);
+    const isPasswordValid = password.length > 0;
+
+    //Retornar la interfaz del usser con de acuerdo a lo asignado
+    return (
         <View style={styles.container}>
             <TextInput
                 style={styles.input}
@@ -25,17 +33,22 @@ const LoginScreen = ({navigation}) => {
             />
             <TextInput
                 style={styles.input}
-                placeholder='Contraseña'
+                placeholder="Contraseña"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
                 maxLength={100}
             />
-            <Button title='Iniciar Sesión' onPress={handleLogin} />
+            <Button
+                title="Iniciar Sesión"
+                onPress={handleLogin}
+                disabled={!isEmailValid || !isPasswordValid}
+            />
         </View>
     );
 };
 
+//Estilos del componente
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -51,4 +64,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LoginScreen
+export default LoginScreen;
