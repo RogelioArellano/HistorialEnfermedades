@@ -32,6 +32,7 @@ const RegisterScreen = ({ navigation }) => {
       return;
     }
 
+    //Expresion regular para validacion de telefono
     if (!/^\d+$/.test(phone)) {
       Alert.alert('Error', 'El teléfono debe contener solo números');
       return;
