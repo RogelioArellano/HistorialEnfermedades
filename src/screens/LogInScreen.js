@@ -33,7 +33,7 @@ const LoginScreen = ({ navigation }) => {
     const isEmailValid = /\S+@\S+\.\S+/.test(email);
     const isPasswordValid = password.length > 0;
 
-    //Retornar la interfaz del usser con de acuerdo a lo asignado
+    //Retornar la interfaz del user de acuerdo a lo asignado
     return (
         <View style={styles.container}>
             <TextInput

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TextInput, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TextInput, StyleSheet, Image, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FAB } from 'react-native-paper'; // Importa el botón flotante
+import { FAB, IconButton } from 'react-native-paper'; // Importa el botón flotante
 
 //Este componente es para mostrar y buscar los registros de enfermedades
 const ListScreen = ({ navigation }) => {
@@ -19,8 +19,24 @@ const ListScreen = ({ navigation }) => {
             } else {
                 // Datos de prueba en caso de no haber registros XD
                 const mockData = [
-                    { id: '1', date: '2023-01-29', patient: 'Rogelio Arellano', doctor: 'DR. Simi', discomfort: 'Gripita' },
-                    { id: '2', date: '2023-01-30', patient: 'Cruz Treviño de la Garza', doctor: 'Chapatin', discomfort: 'Mal de puerco' },
+                    { 
+                        id: '1', 
+                        date: '2023-01-29', 
+                        patient: 'Rogelio Arellano', 
+                        doctor: 'DR. Simi', 
+                        discomfort: 'Gripita', 
+                        phone: '9987766543',
+                        image: null
+                    },
+                    { 
+                        id: '2', 
+                        date: '2023-01-30', 
+                        patient: 'Cruz Treviño de la Garza', 
+                        doctor: 'Chapatin', 
+                        discomfort: 'Mal de puerco',
+                        phone: '1234567789',
+                        image: null 
+                    },
                 ];
                 setRecords(mockData);
                 //Guardar datos en el asyncStorage TODO probar
@@ -29,6 +45,31 @@ const ListScreen = ({ navigation }) => {
         };
         loadData();
     }, []);
+
+    // Función para eliminar un registro
+  const handleDelete = (id) => {
+    Alert.alert(
+      'Eliminar Registro',
+      '¿Estás seguro de que deseas eliminar este registro?',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Eliminar',
+          style: 'destructive',
+          onPress: async () => {
+            // Filtrar el registro a eliminar
+            const updatedRecords = records.filter(record => record.id !== id);
+            setRecords(updatedRecords);
+            await AsyncStorage.setItem('records', JSON.stringify(updatedRecords));
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
 
     // Filtrar y ordenar registros
     const filteredRecords = records
@@ -53,9 +94,24 @@ const ListScreen = ({ navigation }) => {
                 data={filteredRecords}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <View style={styles.item}>
-                        <Text style={styles.itemText}>{item.date} - {item.patient}</Text>
-                        <Text style={styles.itemText}>{item.discomfort.substring(0, 50)}</Text>
+                    <View style={styles.itemContainer}>
+                        <Image 
+                            source={item.image ? { uri: item.image } : require('../default-image.png')}
+                            style={styles.avatar}
+                        />
+                        <View style={styles.itemTextContainer}>
+                            <Text style={styles.patientName}>Paciente: {item.patient}</Text>
+                            <Text style={styles.discomfort}>Malestar: {item.discomfort.substring(0, 50)}</Text>
+                            <Text style={styles.doctor}>Doctor: {item.doctor}</Text>
+                            <Text style={styles.phone}>Tél: {item.phone}</Text>
+                        </View>
+                        {/* Botón de eliminar */}
+                        <IconButton
+                        icon="delete"
+                        color="#FF0000"
+                        size={20}
+                        onPress={() => handleDelete(item.id)}
+                        />
                     </View>
                 )}
             />
@@ -74,6 +130,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
+        backgroundColor: '#F8F9FA',
     },
     searchInput: {
         height: 40,
@@ -81,6 +138,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginBottom: 12,
         paddingHorizontal: 8,
+        borderRadius: 5,
+        backgroundColor: '#FFF',
     },
     item: {
         padding: 12,
@@ -96,6 +155,46 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         backgroundColor: '#007BFF', // Color del botón flotante
+    },
+    itemContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+        backgroundColor: '#FFF',
+        borderRadius: 8,
+        marginBottom: 8,
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        elevation: 2,
+    },
+    avatar: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        marginRight: 12,
+    },
+    itemTextContainer: {
+        flex: 1,
+    },
+    patientName: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    discomfort: {
+        fontSize: 14,
+        color: '#666',
+    },
+    doctor: {
+        fontSize: 14,
+        fontWeight: '500',
+        color: '#333',
+    },
+    phone: {
+        fontSize: 14,
+        color: '#007BFF',
     },
 });
 
